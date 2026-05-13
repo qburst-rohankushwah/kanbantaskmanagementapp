@@ -1,4 +1,23 @@
+/* @import "tailwindcss"; */
+@import "tailwindcss";
+/*
+ * Global Color System
+ *
+ * Usage in Components:
+ * - Use CSS custom properties (CSS variables) for consistent theming
+ * - All colors automatically adapt to light/dark themes
+ * - Example: style={{ backgroundColor: 'var(--color-primary)', color: 'var(--color-surface)' }}
+ *
+ * Color Categories:
+ * - Primary/Secondary: Brand and accent colors
+ * - Semantic: Success, warning, error, info states
+ * - Neutral: Gray scale for text and backgrounds
+ * - Surface: Background colors for different UI levels
+ * - Interactive: Hover, focus, active, disabled states
+ */
+
 :root {
+  /* Base Theme Colors */
   --text: #6b6375;
   --text-h: #08060d;
   --bg: #fff;
@@ -11,13 +30,74 @@
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
+  /* Global Color Palette */
+  /* Primary Colors */
+  --color-primary: #3b82f6;        /* Blue-500 */
+  --color-primary-light: #60a5fa;  /* Blue-400 */
+  --color-primary-dark: #2563eb;   /* Blue-600 */
+  --color-primary-bg: rgba(59, 130, 246, 0.1);
+
+  /* Secondary Colors */
+  --color-secondary: #6366f1;      /* Indigo-500 */
+  --color-secondary-light: #818cf8; /* Indigo-400 */
+  --color-secondary-dark: #4f46e5;  /* Indigo-600 */
+  --color-secondary-bg: rgba(99, 102, 241, 0.1);
+
+  /* Semantic Colors */
+  --color-success: #10b981;        /* Emerald-500 */
+  --color-success-light: #34d399;  /* Emerald-400 */
+  --color-success-dark: #059669;   /* Emerald-600 */
+  --color-success-bg: rgba(16, 185, 129, 0.1);
+
+  --color-warning: #f59e0b;        /* Amber-500 */
+  --color-warning-light: #fbbf24;  /* Amber-400 */
+  --color-warning-dark: #d97706;   /* Amber-600 */
+  --color-warning-bg: rgba(245, 158, 11, 0.1);
+
+  --color-error: #ef4444;          /* Red-500 */
+  --color-error-light: #f87171;    /* Red-400 */
+  --color-error-dark: #dc2626;     /* Red-600 */
+  --color-error-bg: rgba(239, 68, 68, 0.1);
+
+  --color-info: #06b6d4;           /* Cyan-500 */
+  --color-info-light: #22d3ee;     /* Cyan-400 */
+  --color-info-dark: #0891b2;      /* Cyan-600 */
+  --color-info-bg: rgba(6, 182, 212, 0.1);
+
+  /* Neutral Colors */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+
+  /* Surface Colors */
+  --color-surface: #ffffff;
+  --color-surface-hover: #f9fafb;
+  --color-surface-active: #f3f4f6;
+  --color-surface-secondary: #f8fafc;
+  --color-surface-main: #4f555f;
+
+  /* Interactive Colors */
+  --color-hover: rgba(0, 0, 0, 0.05);
+  --color-active: rgba(0, 0, 0, 0.1);
+  --color-focus: rgba(59, 130, 246, 0.5);
+  --color-disabled: #e5e7eb;
+  --color-disabled-text: #9ca3af;
+
+  /* Typography */
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
-  color-scheme: light dark;
+  color-scheme: light;
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
@@ -30,24 +110,85 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+[data-theme="dark"] {
+  /* Base Theme Colors */
+  --text: #9ca3af;
+  --text-h: #f3f4f6;
+  --bg: #16171d;
+  --border: #2e303a;
+  --code-bg: #1f2028;
+  --accent: #c084fc;
+  --accent-bg: rgba(192, 132, 252, 0.15);
+  --accent-border: rgba(192, 132, 252, 0.5);
+  --social-bg: rgba(47, 48, 58, 0.5);
+  --shadow:
+    rgba(0, 0, 0, 0.6) 0 10px 15px -3px, rgba(0, 0, 0, 0.4) 0 4px 6px -2px;
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+  /* Global Color Palette - Dark Theme */
+  /* Primary Colors */
+  --color-primary: #60a5fa;        /* Blue-400 (lighter for dark bg) */
+  --color-primary-light: #93c5fd;  /* Blue-300 */
+  --color-primary-dark: #3b82f6;   /* Blue-500 */
+  --color-primary-bg: rgba(96, 165, 250, 0.15);
+
+  /* Secondary Colors */
+  --color-secondary: #818cf8;      /* Indigo-400 */
+  --color-secondary-light: #a5b4fc; /* Indigo-300 */
+  --color-secondary-dark: #6366f1;  /* Indigo-500 */
+  --color-secondary-bg: rgba(129, 140, 248, 0.15);
+
+  /* Semantic Colors */
+  --color-success: #34d399;        /* Emerald-400 */
+  --color-success-light: #6ee7b7;  /* Emerald-300 */
+  --color-success-dark: #10b981;   /* Emerald-500 */
+  --color-success-bg: rgba(52, 211, 153, 0.15);
+
+  --color-warning: #fbbf24;        /* Amber-400 */
+  --color-warning-light: #fcd34d;  /* Amber-300 */
+  --color-warning-dark: #f59e0b;   /* Amber-500 */
+  --color-warning-bg: rgba(251, 191, 36, 0.15);
+
+  --color-error: #f87171;          /* Red-400 */
+  --color-error-light: #fca5a5;    /* Red-300 */
+  --color-error-dark: #ef4444;     /* Red-500 */
+  --color-error-bg: rgba(248, 113, 113, 0.15);
+
+  --color-info: #22d3ee;           /* Cyan-400 */
+  --color-info-light: #67e8f9;     /* Cyan-300 */
+  --color-info-dark: #06b6d4;      /* Cyan-500 */
+  --color-info-bg: rgba(34, 211, 238, 0.15);
+
+  /* Neutral Colors - Dark Theme */
+  --color-gray-50: #111827;
+  --color-gray-100: #1f2937;
+  --color-gray-200: #374151;
+  --color-gray-300: #4b5563;
+  --color-gray-400: #6b7280;
+  --color-gray-500: #9ca3af;
+  --color-gray-600: #d1d5db;
+  --color-gray-700: #e5e7eb;
+  --color-gray-800: #f3f4f6;
+  --color-gray-900: #f9fafb;
+
+  /* Surface Colors - Dark Theme */
+  --color-surface: #1f2937;
+  --color-surface-hover: #374151;
+  --color-surface-active: #4b5563;
+  --color-surface-secondary: #111827;
+  --color-surface-main: #232a35;
+  
+  /* Interactive Colors - Dark Theme */
+  --color-hover: rgba(255, 255, 255, 0.05);
+  --color-active: rgba(255, 255, 255, 0.1);
+  --color-focus: rgba(96, 165, 250, 0.5);
+  --color-disabled: #374151;
+  --color-disabled-text: #6b7280;
+
+  color-scheme: dark;
+}
+
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 body {
@@ -55,12 +196,9 @@ body {
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
+  width: 100%;
+  margin: 0;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -109,3 +247,4 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+

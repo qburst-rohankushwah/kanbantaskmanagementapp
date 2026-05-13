@@ -1,0 +1,364 @@
+/* Search Field Styles Start*/
+
+select option {
+  background-color: var(--color-surface);
+  color: var(--text);
+}
+
+/* Focus states */
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-bg);
+}
+
+input::placeholder {
+  color: var(--color-gray-400);
+}
+
+.searchFilterContainer {
+  width: 20%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background-color: var(--color-surface);
+  color: var(--text);
+  font-size: 14px;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.searchInput:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-bg);
+  outline-color: red;
+}
+
+.searchInput::placeholder {
+  color: var(--color-gray-400);
+}
+
+/* Search Field Styles End*/
+
+/* Common Styles */
+
+.fontColor {
+  color: var(--text-h);
+}
+
+/* Filter Sidebar Modal Styles */
+.filterModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: flex-start;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.historyModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.historyModalContainer {
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--bg);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  animation: slideInRight 0.3s ease-out;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.filterModalContainer {
+  width: 100%; /* Covers whole screen or large portion depending on screen size */
+  max-width: 800px;
+  background-color: var(--bg);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  animation: slideIn 0.3s ease-out;
+  box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.filterModalHeader {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filterModalBody {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.filterOptionsSection {
+  width: 30%;
+  padding: 24px;
+  border-right: 1px solid var(--border);
+  background-color: var(--color-surface);
+  display: flex;
+  flex-direction: column;
+}
+
+.filterResultsSection {
+  width: 70%;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.filterResultItem {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-left: 12px solid var(--border);
+  border-radius: 0px 8px 8px 0px;
+  margin-bottom: 10px;
+  display: flex; /* Change from row to column */
+  flex-direction: column; /* New */
+  gap: 8px; /* Space between top and bottom sections */
+  background-color: var(
+    --color-surface
+  ); /* Added for better visual separation */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+}
+
+.filterResultItemTop {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between dot and title */
+}
+
+.filterResultItemBottom {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Space between assignee, due date, column */
+  font-size: 0.85em;
+  color: var(--text-secondary); /* Lighter text for secondary info */
+}
+
+.resultTitle {
+  font-weight: 500; /* Make title slightly bolder */
+  color: var(--text); /* Ensure title color is main text color */
+}
+
+.resultAssignee,
+.resultDueDate {
+  white-space: nowrap; /* Prevent wrapping */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.resultColumn {
+  margin-left: auto; /* Push column to the right */
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: var(
+    --color-primary-bg
+  ); /* Light background for column tag */
+  color: var(--color-primary); /* Text color for column tag */
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.clearFiltersButton {
+  width: 100%;
+  padding: 10px 15px;
+  border-radius: 8px;
+  background-color: var(--color-danger); /* Example color, adjust as needed */
+  color: var(--text-light); /* Example color, adjust as needed */
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  margin-top: auto;
+}
+
+/* Custom Checkbox Styles */
+.custom-checkbox {
+  /* Hide default checkbox */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border); /* Default border color */
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  transition: all 0.2s ease-in-out;
+}
+
+.custom-checkbox:checked {
+  background-color: var(--border); /* Checked background color */
+  border-color: var(--border); /* Checked border color */
+}
+
+/* Custom checkmark (optional, can be done with SVG or pseudo-element) */
+.custom-checkbox:checked::before {
+  content: "✓"; /* Unicode checkmark */
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  color: var(--text-h); /* Checkmark color */
+}
+
+/* Hover effect */
+.custom-checkbox:hover {
+  border-color: var(--border);
+}
+
+/* Focus effect */
+.custom-checkbox:focus {
+  outline: 2px solid var(--border);
+  outline-offset: 2px;
+}
+
+.high:checked {
+  background-color: var(--color-error-dark); /* Checked background color */
+  border-color: var(--color-error-dark); /* Checked border color */
+}
+
+.high:hover {
+  border-color: var(--color-error-dark);
+}
+
+.medium:checked {
+  background-color: var(--color-warning-dark); /* Checked background color */
+  border-color: var(--color-warning-dark); /* Checked border color */
+}
+
+.medium:hover {
+  border-color: var(--color-warning-dark);
+}
+
+.low:checked {
+  background-color: var(--color-success-dark); /* Checked background color */
+  border-color: var(--color-success-dark); /* Checked border color */
+}
+
+.low:hover {
+  border-color: var(--color-success-dark);
+}
+
+.assigne:checked {
+  background-color: var(--color-secondary-dark); /* Checked background color */
+  border-color: var(--color-secondary-dark); /* Checked border color */
+}
+
+.assigne:hover {
+  border-color: var(--color-secondary-dark);
+}
+
+/* Button Styles Start */
+
+.button {
+  width: 130px;
+  border-radius: 8px;
+  padding: 4px 10px;
+  text-align: left;
+}
+
+.secondary {
+  background-color: var(--color-secondary-dark);
+  color: var(--text-h);
+}
+
+.primary {
+  background-color: var(--color-primary);
+  color: var(--text-h);
+}
+.warning {
+  background-color: var(--color-warning);
+  color: var(--text-h);
+}
+
+.high {
+  background: var(--color-error-dark);
+  color: var(--text-h);
+}
+
+.medium {
+  background: var(--color-warning-dark);
+  color: var(--text-h);
+}
+
+.low {
+  background: var(--color-success-dark);
+  color: var(--text-h);
+}
+/* Button Styles End */
+
+/* PriorityChip Styles Start */
+
+.selected-chip {
+  outline: 2px solid var(--text-h);
+  outline-offset: 2px;
+}

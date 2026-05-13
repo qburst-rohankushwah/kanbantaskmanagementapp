@@ -1,0 +1,59 @@
+/* BoardHeader Styles */
+
+
+.borderHeader {
+  background-color: var(--bg);
+}
+
+.titleContainer {
+  width: 35%;
+}
+
+.ButtonContainer {
+  width: 45%;
+}
+
+
+.searchInput {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background-color: var(--color-surface);
+  color: var(--text);
+  font-size: 14px;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.searchInput:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-bg);
+  outline-color: red;
+}
+
+.searchInput::placeholder {
+  color: var(--color-gray-400);
+}
+
+
+.filterButton {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: var(--color-surface);
+  color: var(--text);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.filterButton:hover {
+  background-color: var(--color-surface-hover);
+  color: var(--text);
+}
