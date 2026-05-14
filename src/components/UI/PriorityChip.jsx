@@ -7,7 +7,7 @@ const PriorityChip = ({ showSelected, onChange, data, currentValue }) => {
         <Button
           key={item.name}
           label={item.name}
-          onClick={() => onChange({ key: "priority", value: item.value })}
+          onClick={() => showSelected && onChange && onChange({ key: "priority", value: item.value })}
           className={`${item.type} ${currentValue === item.value && showSelected ? "selected-chip" : ""}`}
         />
       ))}
