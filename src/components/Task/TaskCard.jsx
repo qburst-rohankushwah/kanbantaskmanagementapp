@@ -46,6 +46,9 @@ const TaskCard = ({ data }) => {
   const handleConfirmDelete = () => {
     handleDelete();
     setShowConfirm(false);
+
+    // Trigger re-render across the app so filters and lists update immediately
+    window.dispatchEvent(new Event("storage"));
   };
 
   const handleCancelDelete = () => {

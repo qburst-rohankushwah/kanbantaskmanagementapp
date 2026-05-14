@@ -120,6 +120,9 @@ const TaskModal = ({ isOpen, onClose }) => {
 
     resetForm();
     onClose();
+
+    // Trigger re-render across the app by notifying components listening for storage changes
+    window.dispatchEvent(new Event("storage"));
   };
 
   const handleBackdropClick = (e) => {
