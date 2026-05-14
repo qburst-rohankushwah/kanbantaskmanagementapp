@@ -104,10 +104,10 @@ const TaskCard = ({ data }) => {
         </div>
       </div>
       <div className="cardItemDetails">
-        <span className={`priority mr-3 ${data.priority} fontColor`}>
-          {data.priority.toLocaleUpperCase()}
+        <span className={`priority mr-3 ${data?.priority} fontColor`}>
+          {data?.priority?.toLocaleUpperCase()}
         </span>
-        <span className="dueDate fontColor">{data.dueDate} {isOverDue(data.dueDate) && <OverdueIndicator />}</span>
+        <span className="dueDate fontColor">{data?.dueDate} {isOverDue(data?.dueDate) && <OverdueIndicator />}</span>
         <span className="circle low font-normal float-end fontColor">
           {assigneeTag}
         </span>

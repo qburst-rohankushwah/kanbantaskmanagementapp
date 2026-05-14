@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   DndContext, DragOverlay, closestCenter
 } from "@dnd-kit/core";
@@ -12,7 +13,7 @@ const Board = () => {
   const { value: inProgressTasksValue, saveValue: saveInProgressTasks } = useLocalStorage("inProgress", []);
   const { value: doneTasksValue, saveValue: saveDoneTasks } = useLocalStorage("done", []);
   
-  const { searchQuery } = useSearch();
+  const { searchQuery, boardFilters, sidebarFilters, applyBoardFilters } = useSearch();
 
 
   const {
@@ -21,15 +22,30 @@ const Board = () => {
     handleDragEnd,
     activeId,
     findTaskById,
-    todoTasks,
-    inProgressTasks,
-    doneTasks,
+    todoTasks: rawTodoTasks,
+    inProgressTasks: rawInProgressTasks,
+    doneTasks: rawDoneTasks,
   } = useDragAndDrop({
     todoTasksValue, saveTodoTasks,
     inProgressTasksValue, saveInProgressTasks,
     doneTasksValue, saveDoneTasks,
     searchQuery,
+    boardFilters,
+    sidebarFilters,
   });
+
+  // Apply board filters (search + priority/assignee dropdowns) to the raw task lists
+  const todoTasks = useMemo(() => {
+    return typeof applyBoardFilters === "function" ? applyBoardFilters(rawTodoTasks) : (rawTodoTasks || []);
+  }, [rawTodoTasks, applyBoardFilters]);
+
+  const inProgressTasks = useMemo(() => {
+    return typeof applyBoardFilters === "function" ? applyBoardFilters(rawInProgressTasks) : (rawInProgressTasks || []);
+  }, [rawInProgressTasks, applyBoardFilters]);
+
+  const doneTasks = useMemo(() => {
+    return typeof applyBoardFilters === "function" ? applyBoardFilters(rawDoneTasks) : (rawDoneTasks || []);
+  }, [rawDoneTasks, applyBoardFilters]);
 
 
   return (

@@ -11,7 +11,13 @@ describe("SearchContext", () => {
     expect(result.current.searchQuery).toBe("");
     expect(result.current.isHistoryOpen).toBe(false);
     expect(result.current.isFilterOpen).toBe(false);
-    expect(result.current.filters).toEqual({
+    expect(result.current.boardFilters).toEqual({
+      priority: [],
+      assignee: [],
+      isOverdue: false,
+      isDueToday: false,
+    });
+    expect(result.current.sidebarFilters).toEqual({
       priority: [],
       assignee: [],
       isOverdue: false,
@@ -55,24 +61,31 @@ describe("SearchContext", () => {
     expect(result.current.isFilterOpen).toBe(true);
   });
 
-  it("updates filters correctly", () => {
+  it("updates boardFilters correctly using toggleBoardFilter", () => {
     const { result } = renderHook(() => useSearch(), {
       wrapper: SearchProvider,
     });
 
-    const newFilters = {
-      priority: ["high", "medium"],
-      assignee: ["John Doe"],
-      isOverdue: true,
-      isDueToday: false,
-    };
-
     act(() => {
-      result.current.setFilters(newFilters);
+      result.current.toggleBoardFilter("priority", "high");
     });
 
-    expect(result.current.filters).toEqual(newFilters);
+    expect(result.current.boardFilters.priority).toContain("high");
+
+    act(() => {
+      result.current.toggleBoardFilter("isOverdue");
+    });
+
+    expect(result.current.boardFilters.isOverdue).toBe(true);
+
+    act(() => {
+      result.current.clearBoardFilters();
+    });
+
+    expect(result.current.boardFilters.priority).toEqual([]);
+    expect(result.current.boardFilters.isOverdue).toBe(false);
   });
+
 
   it("throws an error when useSearch is used outside of SearchProvider", () => {
     // Silence console error for the expected throw to keep test output clean

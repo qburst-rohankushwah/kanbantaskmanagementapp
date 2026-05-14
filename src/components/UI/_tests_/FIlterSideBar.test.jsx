@@ -23,7 +23,9 @@ vi.mock("../../../utils/utils", () => ({
 
 describe("FilterSideBar Component", () => {
   const mockSetIsFilterOpen = vi.fn();
-  const mockSetFilters = vi.fn();
+  const mockToggleSidebarFilter = vi.fn();
+  const mockClearSidebarFilters = vi.fn();
+  const mockApplySidebarFilters = vi.fn((tasks) => tasks);
   
   const mockTasks = [
     { id: "1", title: "Task 1", priority: "high", assignee: "John", column: "todo", dueDate: "2023-10-10" },
@@ -44,8 +46,10 @@ describe("FilterSideBar Component", () => {
     useSearch.mockReturnValue({
       isFilterOpen: true,
       setIsFilterOpen: mockSetIsFilterOpen,
-      filters: defaultFilters,
-      setFilters: mockSetFilters,
+      sidebarFilters: defaultFilters,
+      toggleSidebarFilter: mockToggleSidebarFilter,
+      clearSidebarFilters: mockClearSidebarFilters,
+      applySidebarFilters: mockApplySidebarFilters,
     });
 
     readStorage.mockImplementation((key) => {
@@ -63,8 +67,10 @@ describe("FilterSideBar Component", () => {
     useSearch.mockReturnValue({ 
       isFilterOpen: false,
       setIsFilterOpen: mockSetIsFilterOpen,
-      filters: defaultFilters,
-      setFilters: mockSetFilters,
+      sidebarFilters: defaultFilters,
+      toggleSidebarFilter: mockToggleSidebarFilter,
+      clearSidebarFilters: mockClearSidebarFilters,
+      applySidebarFilters: mockApplySidebarFilters,
     });
     const { container } = render(
       <SearchProvider>
@@ -116,11 +122,7 @@ describe("FilterSideBar Component", () => {
     
     fireEvent.click(lowCheckbox);
     
-    // It calls the functional update of setFilters
-    expect(mockSetFilters).toHaveBeenCalled();
-    const updateFn = mockSetFilters.mock.calls[0][0];
-    const result = updateFn(defaultFilters);
-    expect(result.priority).toContain("low");
+    expect(mockToggleSidebarFilter).toHaveBeenCalledWith("priority", "low");
   });
 
   it("updates assignee filters when an assignee checkbox is clicked", () => {
@@ -134,10 +136,7 @@ describe("FilterSideBar Component", () => {
 
     fireEvent.click(johnCheckbox);
     
-    expect(mockSetFilters).toHaveBeenCalled();
-    const updateFn = mockSetFilters.mock.calls[0][0];
-    const result = updateFn(defaultFilters);
-    expect(result.assignee).toContain("John");
+    expect(mockToggleSidebarFilter).toHaveBeenCalledWith("assignee", "John");
   });
 
   it("updates status filters (overdue/due today)", () => {
@@ -152,10 +151,7 @@ describe("FilterSideBar Component", () => {
 
     fireEvent.click(overdueCheckbox);
     
-    expect(mockSetFilters).toHaveBeenCalled();
-    const updateFn = mockSetFilters.mock.calls[0][0];
-    const result = updateFn(defaultFilters);
-    expect(result.isOverdue).toBe(true);
+    expect(mockToggleSidebarFilter).toHaveBeenCalledWith("isOverdue");
   });
 
   it("clears all filters when 'Clear All Filters' is clicked", () => {
@@ -168,12 +164,7 @@ describe("FilterSideBar Component", () => {
     
     fireEvent.click(clearButton);
     
-    expect(mockSetFilters).toHaveBeenCalledWith({
-      priority: [],
-      assignee: [],
-      isOverdue: false,
-      isDueToday: false,
-    });
+    expect(mockClearSidebarFilters).toHaveBeenCalled();
   });
 
   it("displays task items in the results section", () => {

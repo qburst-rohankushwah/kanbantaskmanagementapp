@@ -1,13 +1,28 @@
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useSearch } from "../../contexts/SearchContext";
 import { readStorage } from "../../hooks/useLocalStorage";
 import "./style.css";
-import { fetchAssignee, isOverDue, isDueToday } from "../../utils/utils";
+import { fetchAssignee, isOverDue } from "../../utils/utils";
 import { CheckBox } from "./CheckBox";
 import Button from "./Button";
 
 const FilterSideBar = () => {
-  const { isFilterOpen, setIsFilterOpen, filters, setFilters } = useSearch();
+  const { 
+    isFilterOpen, 
+    setIsFilterOpen, 
+    sidebarFilters: filters, 
+    toggleSidebarFilter: toggleFilter, 
+    clearSidebarFilters: clearFilters,
+    applySidebarFilters,
+  } = useSearch();
+  const [storageUpdate, setStorageUpdate] = useState(0);
+
+  // Listen for storage changes to keep the data fresh while the sidebar is open
+  useEffect(() => {
+    const handleStorageChange = () => setStorageUpdate((prev) => prev + 1);
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   // Get all tasks from storage for the preview section
   const allTasks = useMemo(() => {
@@ -15,97 +30,19 @@ const FilterSideBar = () => {
     const inProgress = readStorage("inProgress", []);
     const done = readStorage("done", []);
     return [...todo, ...inProgress, ...done];
-  }, [isFilterOpen]); // Refresh when opened
+  }, [isFilterOpen, storageUpdate]); // Refresh when opened or storage changes
 
   const priorities = ["low", "medium", "high"];
   const allAssignees = useMemo(() => fetchAssignee(allTasks), [allTasks]); // Fetch assignees once, passing allTasks
 
-  const handlePriorityChange = (priority) => {
-    setFilters((prev) => {
-      const current = prev.priority;
-      const next = current.includes(priority)
-        ? current.filter((p) => p !== priority)
-        : [...current, priority];
-      return { ...prev, priority: next };
-    });
-  };
-
-  const handleAssigneeChange = (assignee) => {
-    setFilters((prev) => {
-      const current = Array.isArray(prev.assignee) ? prev.assignee : [];
-      const next = current?.includes(assignee)
-        ? current.filter((a) => a !== assignee)
-        : [...current, assignee];
-      return { ...prev, assignee: next };
-    });
-  };
-
-  const handleOverdueChange = (checked) => {
-    setFilters((prev) => ({ ...prev, isOverdue: checked }));
-  };
-
-  const handleDueTodayChange = (checked) => {
-    setFilters((prev) => ({ ...prev, isDueToday: checked }));
-  };
-
   const filteredData = useMemo(() => {
-    let currentFilteredTasks = allTasks;
-
-    // Apply priority filter
-    if (filters?.priority?.length > 0) {
-      currentFilteredTasks = currentFilteredTasks.filter((task) =>
-        filters.priority.includes(task.priority),
-      );
-    }
-
-    // Apply assignee filter
-    if (filters?.assignee?.length > 0) {
-      currentFilteredTasks = currentFilteredTasks.filter(
-        (task) => task.assignee && filters.assignee.includes(task.assignee),
-      );
-    }
-
-    // Apply overdue filter
-    if (filters?.isOverdue) {
-      currentFilteredTasks = currentFilteredTasks.filter((task) =>
-        isOverDue(task.dueDate),
-      );
-    }
-
-    // Apply due today filter
-    if (filters?.isDueToday) {
-      currentFilteredTasks = currentFilteredTasks.filter((task) =>
-        isDueToday(task.dueDate),
-      );
-    }
-
-    return currentFilteredTasks;
-  }, [
-    allTasks,
-    // Add isDueToday to dependencies for isDueToday utility function
-    // Add isOverDue to dependencies for isOverDue utility function
-    // This ensures that if these utility functions somehow change (though unlikely for pure functions),
-    // the memoized value would re-evaluate. More importantly, it makes the dependency array exhaustive
-    // as per React's linting rules, acknowledging their use within the memoized callback.
-    isDueToday,
-    isOverDue,
-    // Existing filter dependencies
-    filters?.priority,
-    filters?.assignee,
-    filters?.isOverdue,
-    filters?.isDueToday,
-  ]);
-
+    return typeof applySidebarFilters === "function" ? applySidebarFilters(allTasks) : (allTasks || []);
+  }, [allTasks, applySidebarFilters, filters]); // Added filters as dependency to ensure preview updates
+  
   if (!isFilterOpen) return null;
 
-  const handleClearFilters = () => {
-    setFilters({
-      priority: [],
-      assignee: [],
-      isOverdue: false,
-      isDueToday: false,
-    });
-  };
+    const OverdueIndicator = () => <span className="priority mr-3 fontColor high">Overdue</span>;
+
 
   return (
     <div className="filterModalOverlay" onClick={() => setIsFilterOpen(false)}>
@@ -116,8 +53,8 @@ const FilterSideBar = () => {
         <div className="filterModalHeader">
           <h3>FILTERS</h3>
           <h3>
-            Filtered Result ({filteredData.length}{" "}
-            {filteredData.length <= 1 ? "task" : "tasks"})
+            Filtered Result ({filteredData?.length}{" "}
+            {filteredData?.length <= 1 ? "task" : "tasks"})
           </h3>
           <button
             className="closeButton"
@@ -136,8 +73,8 @@ const FilterSideBar = () => {
               {priorities.map((priority) => (
                 <label key={priority} className="checkboxLabel">
                   <CheckBox
-                    checked={filters.priority.includes(priority)}
-                    onChange={() => handlePriorityChange(priority)}
+                    checked={filters?.priority?.includes(priority)}
+                    onChange={() => toggleFilter("priority", priority)}
                     className={priority}
                   />
                   <span className="capitalize">{priority}</span>
@@ -152,8 +89,8 @@ const FilterSideBar = () => {
                   <label key={assignee} className="checkboxLabel">
                     <CheckBox
                       checked={filters?.assignee?.includes(assignee)}
-                      onChange={() => handleAssigneeChange(assignee)}
-                      className="assigne"
+                      onChange={() => toggleFilter("assignee", assignee)}
+                      className="assignee"
                     />
                     <span>{assignee}</span>
                   </label>
@@ -167,16 +104,16 @@ const FilterSideBar = () => {
             <div className="checkboxGroup">
               <label className="checkboxLabel">
                 <CheckBox
-                  checked={filters.isOverdue}
-                  onChange={(e) => handleOverdueChange(e.target.checked)}
+                  checked={filters?.isOverdue}
+                  onChange={() => toggleFilter("isOverdue")}
                   className="high"
                 />
                 <span>Overdue</span>
               </label>
               <label className="checkboxLabel">
                 <CheckBox
-                  checked={filters.isDueToday}
-                  onChange={(e) => handleDueTodayChange(e.target.checked)}
+                  checked={filters?.isDueToday}
+                  onChange={() => toggleFilter("isDueToday")}
                 />
                 <span>Due Today</span>
               </label>
@@ -185,7 +122,7 @@ const FilterSideBar = () => {
             <Button
               type="button"
               className="clearFiltersButton mt-6 high"
-              onClick={handleClearFilters}
+              onClick={clearFilters}
               label={"Clear All Filters"}
             />
             
@@ -210,10 +147,11 @@ const FilterSideBar = () => {
                       <span
                         className={`priority mr-3 ${task.priority} fontColor`}
                       >
-                        {task.priority.toLocaleUpperCase()}
+                        {task?.priority?.toLocaleUpperCase()}
                       </span>
+                      {isOverDue(task?.dueDate) && <OverdueIndicator />}
                       <span className="resultColumn">
-                        {task.column.toUpperCase()}
+                        {task?.column?.toUpperCase()}
                       </span>
                     </div>
                   </div>

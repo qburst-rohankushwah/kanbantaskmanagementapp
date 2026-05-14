@@ -308,12 +308,12 @@ input::placeholder {
   border-color: var(--color-success-dark);
 }
 
-.assigne:checked {
+.assignee:checked {
   background-color: var(--color-secondary-dark); /* Checked background color */
   border-color: var(--color-secondary-dark); /* Checked border color */
 }
 
-.assigne:hover {
+.assignee:hover {
   border-color: var(--color-secondary-dark);
 }
 
@@ -362,3 +362,15 @@ input::placeholder {
   outline: 2px solid var(--text-h);
   outline-offset: 2px;
 }
+
+/* PriorityChip Styles End */
+
+
+/* Board Filter Styles Start */
+
+.dropdown {
+    background: var(--color-surface);
+    color: var(--text-h);
+}
+/* Board Filter Styles Start */
+

@@ -15,9 +15,10 @@ vi.mock("../../UI/SearchBar", () => ({
   )),
 }));
 
-vi.mock("../../UI/PriorityChip", () => ({
+// Mock BoardFilter instead of PriorityChip
+vi.mock("../../UI/BoardFilter", () => ({
   default: vi.fn(({ data }) => (
-    <div data-testid="mock-priority-chip">{data?.length} items</div>
+    <div data-testid="mock-board-filter">Mocked BoardFilter</div>
   )),
 }));
 
@@ -43,15 +44,12 @@ describe("BoardHeader Component", () => {
     expect(screen.getByText("Sprint 4 - TeamFlow Board")).toBeInTheDocument();
   });
 
-  it("renders PriorityChip and SearchBar with correct props from context", () => {
+  it("renders BoardFilter and SearchBar with correct props from context", () => {
     render(<BoardHeader />);
     
     const searchBar = screen.getByTestId("mock-search-bar");
-    const priorityChip = screen.getByTestId("mock-priority-chip");
-
     expect(searchBar).toHaveTextContent("initial query");
-    // BoardMenuItems has 3 items defined in constants
-    expect(priorityChip).toHaveTextContent("3 items");
+    expect(screen.getByTestId("mock-board-filter")).toBeInTheDocument();
   });
 
   it("calls setIsFilterOpen(true) when the Filter Task button is clicked", () => {
