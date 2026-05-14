@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { useSearch } from "../../contexts/SearchContext";
 import { readStorage } from "../../hooks/useLocalStorage";
 import { fetchAssignee } from "../../utils/utils";
@@ -30,12 +30,12 @@ const BoardFilter = () => {
     return [...todo, ...inProgress, ...done];
   }, [storageUpdate]);
 
-  const priorities = ["low", "medium", "high"];
+  const priorities = useMemo(() => ["low", "medium", "high"], []);
   const allAssignees = useMemo(() => fetchAssignee(allTasks), [allTasks]);
 
-  const toggleDropdown = (name) => {
-    setOpenDropdown(openDropdown === name ? null : name);
-  };
+  const toggleDropdown = useCallback((name) => {
+    setOpenDropdown((prev) => (prev === name ? null : name));
+  }, []);
 
   // Close dropdown when clicking outside the component
   useEffect(() => {

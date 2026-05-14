@@ -55,7 +55,7 @@ const Board = () => {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex-1 px-4 py-6 flex flex-wrap justify-start gap-4 overflow-auto">
+      <div className="flex-1 px-4 py-2 flex flex-nowrap justify-start gap-4 overflow-x-auto overflow-y-hidden">
         <Column
           title="TODO"
           count={todoTasks.length}

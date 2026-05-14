@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useContext, useState, useCallback, useMemo } from "react";
 import { isOverDue, isDueToday } from "../utils/utils";
 
 const SearchContext = createContext();
@@ -119,31 +119,25 @@ export const SearchProvider = ({ children }) => {
     [sidebarFilters],
   );
 
-  const isBoardFilterActive = useCallback(() => {
-    return (
-      boardFilters.priority.length > 0 ||
-      boardFilters.assignee.length > 0 ||
-      boardFilters.isOverdue ||
-      boardFilters.isDueToday
-    );
-  }, [boardFilters]);
+  const isBoardFilterActive = useMemo(() => (
+    boardFilters.priority.length > 0 ||
+    boardFilters.assignee.length > 0 ||
+    boardFilters.isOverdue ||
+    boardFilters.isDueToday
+  ), [boardFilters]);
 
-  const isSidebarFilterActive = useCallback(() => {
-    return (
-      sidebarFilters.priority.length > 0 ||
-      sidebarFilters.assignee.length > 0 ||
-      sidebarFilters.isOverdue ||
-      sidebarFilters.isDueToday
-    );
-  }, [sidebarFilters]);
+  const isSidebarFilterActive = useMemo(() => (
+    sidebarFilters.priority.length > 0 ||
+    sidebarFilters.assignee.length > 0 ||
+    sidebarFilters.isOverdue ||
+    sidebarFilters.isDueToday
+  ), [sidebarFilters]);
 
-  const isAnyFilterActive = useCallback(() => {
-    return (
-      isBoardFilterActive() ||
-      isSidebarFilterActive() ||
-      searchQuery.trim() !== ""
-    );
-  }, [isBoardFilterActive, isSidebarFilterActive, searchQuery]);
+  const isAnyFilterActive = useMemo(() => (
+    isBoardFilterActive ||
+    isSidebarFilterActive ||
+    searchQuery.trim() !== ""
+  ), [isBoardFilterActive, isSidebarFilterActive, searchQuery]);
 
   const value = {
     searchQuery,

@@ -20,6 +20,7 @@ const TaskModal = ({ isOpen, onClose }) => {
   );
 
   const { task } = useTaskModal();
+   
   const initialFormData = useMemo(() => {
     return task
       ? {
@@ -243,6 +244,7 @@ const TaskModal = ({ isOpen, onClose }) => {
               showSelected={true}
               onChange={handlePriorityChange}
               data={Status}
+              currentValue={formData.priority}
             />
           </div>
 

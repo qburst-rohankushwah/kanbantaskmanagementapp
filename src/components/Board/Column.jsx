@@ -22,11 +22,11 @@ const Column = ({ title, count, items, type, id }) => {
       ref={setNodeRef}
       className={`cardContainer ${type} ${isOver ? "dragging-over" : ""}`}
     >
+      <div className="cardHeader mb-4 itemLayout ">
+        <h2 className="cardTitle fontColor">{title}</h2>
+        <Badge count={count} />
+      </div>
       <div className="cardContent">
-        <div className="cardHeader mb-4 itemLayout ">
-          <h2 className="cardTitle fontColor">{title}</h2>
-          <Badge count={count} />
-        </div>
         <div className="cardItems">
           <SortableContext
             items={taskIds}

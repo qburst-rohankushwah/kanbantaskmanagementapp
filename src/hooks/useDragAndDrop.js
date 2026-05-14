@@ -64,57 +64,49 @@ const useDragAndDrop = ({
     const activeTask = findTaskById(activeId);
     if (!activeTask) return;
 
-    // If dropping on a column (not another task)
-    if (overId === "todo" || overId === "inProgress" || overId === "done") {
-      const newColumn = overId;
+    // Find if we are dropping over a task or a column container
+    const overTask = findTaskById(overId);
+    const destinationColumn = overTask ? overTask.column : overId;
 
-      // If task is already in the target column, do nothing
-      if (activeTask.column === newColumn) {
-        setActiveId(null);
-        return;
-      }
+    // Ensure the drop target is a valid column
+    if (!["todo", "inProgress", "done"].includes(destinationColumn)) {
+      setActiveId(null);
+      return;
+    }
 
-      // Remove from old column
-      const oldColumnTasks = activeTask.column === "todo" ? [...todoTasksValue] :
-                           activeTask.column === "inProgress" ? [...inProgressTasksValue] : [...doneTasksValue];
-      const filteredOldTasks = oldColumnTasks.filter(task => task.id !== activeId);
+    // Scenario 1: Moving to a different column
+    if (activeTask.column !== destinationColumn) {
+      const sourceCol = activeTask.column;
+      const destCol = destinationColumn;
 
-      // Add to new column
-      const newColumnTasks = newColumn === "todo" ? [...todoTasksValue] :
-                           newColumn === "inProgress" ? [...inProgressTasksValue] : [...doneTasksValue];
-      const updatedTask = { ...activeTask, column: newColumn };
-      newColumnTasks.push(updatedTask);
+      const sourceTasks = sourceCol === "todo" ? todoTasksValue : sourceCol === "inProgress" ? inProgressTasksValue : doneTasksValue;
+      const destTasks = destCol === "todo" ? todoTasksValue : destCol === "inProgress" ? inProgressTasksValue : doneTasksValue;
 
-      // Update localStorage
-      if (activeTask.column === "todo") saveTodoTasks(filteredOldTasks);
-      else if (activeTask.column === "inProgress") saveInProgressTasks(filteredOldTasks);
-      else saveDoneTasks(filteredOldTasks);
+      const filteredSource = sourceTasks.filter(t => t.id !== activeId);
+      const updatedTask = { ...activeTask, column: destCol };
+      const updatedDest = [...destTasks, updatedTask];
 
-      if (newColumn === "todo") saveTodoTasks(newColumnTasks);
-      else if (newColumn === "inProgress") saveInProgressTasks(newColumnTasks);
-      else saveDoneTasks(newColumnTasks);
+      if (sourceCol === "todo") saveTodoTasks(filteredSource);
+      else if (sourceCol === "inProgress") saveInProgressTasks(filteredSource);
+      else saveDoneTasks(filteredSource);
 
-      logActivity({
-        type: "MOVE",
-        task: updatedTask,
-        from: activeTask.column,
-        to: newColumn,
-      });
+      if (destCol === "todo") saveTodoTasks(updatedDest);
+      else if (destCol === "inProgress") saveInProgressTasks(updatedDest);
+      else saveDoneTasks(updatedDest);
 
-    } else {
-      // Dropping on another task - reorder within same column
-      const activeColumn = activeTask.column;
-      const columnTasks = activeColumn === "todo" ? [...todoTasksValue] :
-                         activeColumn === "inProgress" ? [...inProgressTasksValue] : [...doneTasksValue];
+      logActivity({ type: "MOVE", task: updatedTask, from: sourceCol, to: destCol });
+    } 
+    // Scenario 2: Reordering in the same column
+    else if (overTask && activeId !== overId) {
+      const col = activeTask.column;
+      const tasks = col === "todo" ? todoTasksValue : col === "inProgress" ? inProgressTasksValue : doneTasksValue;
+      const oldIndex = tasks.findIndex(t => t.id === activeId);
+      const newIndex = tasks.findIndex(t => t.id === overId);
 
-      const activeIndex = columnTasks.findIndex(task => task.id === activeId);
-      const overIndex = columnTasks.findIndex(task => task.id === overId);
-
-      if (activeIndex !== -1 && overIndex !== -1) {
-        const reorderedTasks = arrayMove(columnTasks, activeIndex, overIndex);
-
-        if (activeColumn === "todo") saveTodoTasks(reorderedTasks);
-        else if (activeColumn === "inProgress") saveInProgressTasks(reorderedTasks);
+      if (oldIndex !== -1 && newIndex !== -1) {
+        const reorderedTasks = arrayMove(tasks, oldIndex, newIndex);
+        if (col === "todo") saveTodoTasks(reorderedTasks);
+        else if (col === "inProgress") saveInProgressTasks(reorderedTasks);
         else saveDoneTasks(reorderedTasks);
       }
     }
