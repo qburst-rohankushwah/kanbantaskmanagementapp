@@ -153,7 +153,7 @@ const TaskModal = ({ isOpen, onClose }) => {
 
   return (
     <div className="modalBackdrop" onClick={handleBackdropClick} data-testid="modal-backdrop">
-      <div className="modalContent">
+      <div className="modalContent w-full max-w-lg mx-4 sm:mx-auto max-h-[95vh] overflow-y-auto shadow-2xl">
         <div className="modalHeader">
           <h2 className="modalTitle">
             {task?.id ? "Update Task" : "Add New Task"}
@@ -268,7 +268,7 @@ const TaskModal = ({ isOpen, onClose }) => {
             </select>
           </div>
 
-          <div className="modalActions">
+          <div className="modalActions flex flex-col-reverse sm:flex-row gap-2 mt-8">
             <button type="button" className="cancelButton" onClick={onClose}>
               Cancel
             </button>

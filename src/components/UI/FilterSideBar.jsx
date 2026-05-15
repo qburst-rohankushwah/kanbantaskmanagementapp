@@ -47,7 +47,7 @@ const FilterSideBar = () => {
   return (
     <div className="filterModalOverlay" onClick={() => setIsFilterOpen(false)}>
       <div
-        className="filterModalContainer"
+        className="filterModalContainer w-[95%] max-w-4xl max-h-[90vh] overflow-hidden flex flex-col rounded-xl shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="filterModalHeader">
@@ -64,10 +64,10 @@ const FilterSideBar = () => {
           </button>
         </div>
 
-        <div className="filterModalBody">
+        <div className="filterModalBody flex flex-col md:flex-row overflow-hidden">
           {/* Section 1: Checkboxes */}
 
-          <div className="filterOptionsSection">
+          <div className="filterOptionsSection w-full md:w-1/3 overflow-y-auto border-b md:border-b-0">
             <h4>Priority</h4>
             <div className="checkboxGroup">
               {priorities.map((priority) => (
@@ -129,7 +129,7 @@ const FilterSideBar = () => {
           </div>
 
           {/* Section 2: Filtered Data */}
-          <div className="filterResultsSection">
+          <div className="filterResultsSection w-full md:w-2/3 border-t md:border-t-0 md:border-l overflow-y-auto">
             <div className="resultsList">
               {filteredData.length > 0 ? (
                 filteredData.map((task) => (

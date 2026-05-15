@@ -12,7 +12,7 @@ const BoardHeader = () => {
   return (
     <header className="px-6 py-4 transition-colors borderHeader">
       <div>
-        <div className="flex justify-between items-baseline mb-4">
+        <div className="flex justify-between items-baseline">
           <div className="titleContainer">
             <h6
               className="text-2xl font-bold"

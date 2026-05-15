@@ -55,7 +55,7 @@ const HistorySideBar = () => {
   return (
     <div className="historyModalOverlay" onClick={() => setIsHistoryOpen(false)}>
       <div
-        className="historyModalContainer"
+        className="historyModalContainer w-[90%] max-w-md max-h-[90vh] flex flex-col rounded-xl shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="filterModalHeader">

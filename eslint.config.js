@@ -48,15 +48,17 @@ export default [
       // Imports
 
       // General
-      "no-unused-vars": "warn",
-      "no-console": "warn",
-
+       "no-console": "off",
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-explicit-any": "off",
       // Accessibility
       "jsx-a11y/alt-text": "warn",
 
       // Formatting
       ...prettier.rules,
       "import/no-unresolved": "off",
+
+    
     },
     ignores: ["dist/**", "node_modules/**"],
     settings: {

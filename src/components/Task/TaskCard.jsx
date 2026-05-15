@@ -75,10 +75,10 @@ const TaskCard = ({ data }) => {
     >
       <div className="taskCardHeader">
         <div className="flex items-center space-x-2">
-          <div className={`dot ${data.priority} fontColor`} />
-          <p className="cardItemTitle fontColor">{data.title}</p>
+          <div className={`dot ${data.priority} fontColor flex-shrink-0`} />
+          <p className="cardItemTitle fontColor truncate" title={data.title}>{data.title}</p>
         </div>
-        <div className="taskCardActions">
+        <div className="taskCardActions flex-shrink-0">
           <button
             type="button"
             className="iconButton editButton"

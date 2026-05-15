@@ -2,7 +2,7 @@ import Button from "./Button";
 
 const PriorityChip = ({ showSelected, onChange, data, currentValue }) => {
   return (
-    <div className="flex space-x-4 items-center">
+    <div className="flex flex-wrap gap-2 sm:gap-4 items-center">
       {data.map((item) => (
         <Button
           key={item.name}

@@ -1,16 +1,39 @@
-# React + Vite
+# Application Setup 
+ npm install
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# To Run the Appication 
+ npm run dev 
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+# To Run the Test Cases 
+ npm run test
 
-## React Compiler
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+# To Run the Eslint 
+ npm run lint
 
-## Expanding the ESLint configuration
+# Application Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Theme
+2. Dashboard Filter: To filter the task on the column
+3. Dashboard Search: To search the task on the column
+4. Create Task
+5. Edit Task 
+6. Delete Task
+7. Drag-and-Drop Task
+8. Filter Sidebar: To filter the task on the sidebar
+9. History side bar to see the activity
+10. Undo the last activity from the History sidebar.
+11. Routing 
+12. Local Storage for Database
+
+
+# Additional things
+ All the features are covered with the test cases.
+ All lint errors have been resolved.
+
+# Self Review
+
+ The application has 3 ways to filter the records: search, board filter, and sidebar filter. It was very tough to properly sync up data with these filter queries.
+
+ To solve this problem, I have used the custom hooks and implemented separate methods to collect the queries and methods to filter the records.

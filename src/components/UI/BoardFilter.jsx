@@ -52,7 +52,7 @@ const BoardFilter = () => {
     (filters?.isOverdue ? 1 : 0) + (filters?.isDueToday ? 1 : 0);
 
   return (
-    <div className="flex items-center gap-3 mb-4 filter-dropdown-container">
+    <div className="flex flex-wrap items-center gap-3 mb-4 filter-dropdown-container">
       {/* Priority Multi-Select Dropdown */}
       <div className="relative flex-shrink-0">
         <button
