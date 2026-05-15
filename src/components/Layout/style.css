@@ -1,0 +1,47 @@
+.headerLogo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  width: 40px;
+  height: 40px;
+  background-color: var(--color-secondary-dark);
+  border-radius: 50%;
+  margin-right: 3px;
+}
+
+.header {
+  background-color: var(--bg);
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.logo {
+  width: 20%;
+}
+
+.menu {
+  width: 45%;
+}
+
+.action {
+  width: 40%;
+}
+
+.nonSelectedMenu {
+  color: var(--text);
+  font-weight: 400;
+  width: 100px;
+  border-radius: 8px;
+  padding: 2px 10px;
+}
+
+.selectedMenu {
+  color: var(--text-h);
+  font-weight: 600;
+  background-color: var(--color-secondary-dark);
+  width: 100px;
+  border-radius: 8px;
+  padding: 2px 10px;
+}
